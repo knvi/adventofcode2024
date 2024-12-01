@@ -1,0 +1,15 @@
+[package]
+name = "adventofcode2024"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+clap = {version = "4.5.21", features = ["derive"]}
+
+[[bin]]
+name = "adventofcode2024bin"
+path = "src/bin.rs"
+
+[lib]
+name = "adventofcode2024lib"
+path = "src/lib.rs"
