@@ -1,16 +1,25 @@
-use std::{cmp::{max, min}, collections::HashMap};
-use itertools::Itertools;
 use regex::Regex;
 
 const INPUT: &str = include_str!("../../input/input_03.txt");
 
 pub fn run() {
-    let mut regex = Regex::new(r"mul\(([0-9]{1,3}),([0-9]{1,3})\)").unwrap();
-    let mut a = 0;
-    for (_, [num1, num2]) in regex.captures_iter(INPUT).map(|x| x.extract()) {
-        a += num1.parse::<i32>().unwrap() * num2.parse::<i32>().unwrap()
+    let regex = Regex::new(r"(mul\(\d+,\d+\)|do(n't)?\(\))").unwrap(); // good regex ? this isnt real 
+    let (mut a, mut b) = (0, 0);
+    let mut dont = false; // shoutout dont gc
+    for x in regex.find_iter(INPUT) {
+        match x.as_str() {
+            "do()" => dont = false,
+            "don't()" => dont = true,
+            x => {
+                let (f, g) = x[4..x.len()-1].split_once(',').unwrap();
+                let i = f.parse::<i32>().unwrap() * g.parse::<i32>().unwrap();
+                a += i;
+                if dont == false { b += i }; 
+            }
+        }
     }
+    
 
     println!("part 1 answer {a}");
-    // println!("part 2 answer {b}");
+    println!("part 2 answer {b}");
 }
